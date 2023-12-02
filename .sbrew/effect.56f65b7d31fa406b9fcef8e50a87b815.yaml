@@ -1,0 +1,36 @@
+﻿FormatVersion: 7
+Name: "AvoidanceGenerator"
+Script: "AvoidanceGenerator"
+Multithreaded: No
+Config:
+  RandomSeed:
+    Type: "System.Int32"
+    Value: "0"
+    DisplayName: "Random Seed"
+    BeginsGroup: "Common"
+Layers:
+  e14fe62f80cc4a7f8761278ac31abcd1:
+    Name: "Room"
+    OsbLayer: Overlay
+    DiffSpecific: No
+    Visible: Yes
+  bd9b169c232a4d3591543a8cf922ecda:
+    Name: "-727"
+    OsbLayer: Overlay
+    DiffSpecific: No
+    Visible: Yes
+  5b58a0b78ff748a6b81c704637d7e17d:
+    Name: "Overlay"
+    OsbLayer: Overlay
+    DiffSpecific: No
+    Visible: Yes
+  b5f6123beb3a436bbb99b76e0ee096d5:
+    Name: "-1000000"
+    OsbLayer: Overlay
+    DiffSpecific: No
+    Visible: Yes
+  c70e7e5efa284856a8ce2a250def0bc3:
+    Name: "-1100000"
+    OsbLayer: Overlay
+    DiffSpecific: No
+    Visible: Yes

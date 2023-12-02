@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace>StorybrewScripts</RootNamespace>
+    <AssemblyName>storyboard</AssemblyName>
+    <LangVersion>10</LangVersion>
+    <IntermediateOutputPath>..\..\cache\obj</IntermediateOutputPath>
+    <OutputPath>..\..\cache\bin</OutputPath>
+    <Configurations>Output</Configurations>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>..\..\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="StorybrewCommon">
+      <HintPath>..\..\StorybrewCommon.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
