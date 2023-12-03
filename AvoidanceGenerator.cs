@@ -143,9 +143,7 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
 
     private void Timeline19(GameEngine gameEngine)
     {
-        // BgSprite = null;
-        BgSprite = GetLayer("Room").CreateSprite("room150_emptyT.png", OsbOrigin.TopLeft, Vector2.Zero);
-        BgSprite.Scale(1488 * stepMilliseconds, 2289 * stepMilliseconds, positionMultiplier, positionMultiplier);
+        BgSprite = null;
 
         BuildRoom150(gameEngine);
         // this acts as a collection of type 756/747 objects, aka when the blocks would appear one of these dummy bg objects gets visible instead
@@ -157,6 +155,8 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
 
         // technically part of the previous timeline but we need to setup BG before starting this one
         gameEngine.Step(17); // 64
+        BgSprite = GetLayer("Room").CreateSprite("room150_emptyT.png", OsbOrigin.TopLeft, new Vector2(1600, 0));
+        BgSprite.Scale(1488 * stepMilliseconds, 2289 * stepMilliseconds, positionMultiplier, positionMultiplier);
         // starts at step 64, before that is presumably testing code
         gameEngine.AddObject(new Object748(gameEngine));
         gameEngine.AddObject(new Object750(gameEngine));

@@ -91,7 +91,7 @@ public class GameEngine
             }
 
             if (ViewAngle != _previousViewAngle || aliveObject.RotationChanged())
-                aliveObject.UnderlyingSprite.Rotate(CurrentTime, CurrentTime + stepMilliseconds, aliveObject.UnderlyingSprite.RotationAt(CurrentTime), aliveObject.Rotation - DegToRad(ViewAngle));
+                aliveObject.UnderlyingSprite.Rotate(CurrentTime, aliveObject.Rotation - DegToRad(ViewAngle));
 
             if (aliveObject.ScaleChanged())
                 aliveObject.UnderlyingSprite.Scale(CurrentTime, aliveObject.Scale * 0.8);
