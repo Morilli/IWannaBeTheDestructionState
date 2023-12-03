@@ -90,6 +90,8 @@ public class GameEngine
                     aliveObject.CurrentX - ViewXOffset, aliveObject.CurrentY - ViewYOffset, aliveObject.NextX - ViewXOffset, aliveObject.NextY - ViewYOffset);
             }
 
+            // TODO: this technically is problematic, as objects may want to be spawned with a default rotation and only changed later
+            // this method will apply the rotation to the entire object's lifetime before CurrentTime as well though
             if (ViewAngle != _previousViewAngle || aliveObject.RotationChanged())
                 aliveObject.UnderlyingSprite.Rotate(CurrentTime, aliveObject.Rotation - DegToRad(ViewAngle));
 
