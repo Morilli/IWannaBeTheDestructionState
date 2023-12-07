@@ -24,6 +24,8 @@ public static class Utils
 
     internal static CommandPosition Rotate(CommandPosition position, double angle)
     {
+        if (angle == 0) return position;
+
         double radAngle = DegToRad(-angle);
         double newX = playfieldMiddleX + (position.X - playfieldMiddleX) * Math.Cos(radAngle) - (position.Y - playfieldMiddleY) * Math.Sin(radAngle);
         double newY = playfieldMiddleY + (position.X - playfieldMiddleX) * Math.Sin(radAngle) + (position.Y - playfieldMiddleY) * Math.Cos(radAngle);

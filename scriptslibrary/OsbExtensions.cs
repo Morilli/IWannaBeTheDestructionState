@@ -9,7 +9,7 @@ namespace StorybrewScripts;
 internal static class OsbSpriteExtensions
 {
     // minimum and maximum values for the playfield; everything beyond is out of screen
-    // this may only hold true for 16:9 monitors and the specififc objects used, but idc
+    // this may only hold true for 16:9 monitors and the specific objects used, but idc
     private const double minX = -130 / positionMultiplier;
     private const double maxX = 770 / positionMultiplier;
     private const double minY = -12 / positionMultiplier;
@@ -22,7 +22,7 @@ internal static class OsbSpriteExtensions
         return endX is >= minX and <= maxX && endY is >= minY and <= maxY ? new CommandPosition(endX, endY) : null;
     }
 
-    // move an objct into a specific direction (in RAD) with a specific speed, until it is offscreen
+    // move an object into a specific direction (in RAD) with a specific speed, until it is offscreen
     internal static CommandPosition? MoveWith(this OsbSprite sprite, double startTime, double initialXPos, double initialYPos, double direction, double speed, int maxFramesToLive=int.MaxValue)
     {
         double x = Math.Cos(direction) * speed;
