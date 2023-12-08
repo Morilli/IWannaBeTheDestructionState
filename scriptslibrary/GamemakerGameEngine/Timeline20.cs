@@ -576,7 +576,7 @@ public sealed class Object797 : GameObject
     {
         public Clock0(Object797 parent) : base(() =>
         {
-            parent.engine.AddObject(new Object788(parent.engine, parent.engine.PlayerX, parent.engine.PlayerY, parent.image_index)
+            parent.engine.AddObject(new Object788(parent.engine, parent.CurrentX, parent.CurrentY, parent.image_index)
             {
                 Speed = 15,
                 Direction = -90

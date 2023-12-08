@@ -113,7 +113,7 @@ public class GameEngine
                 aliveObject.UnderlyingSprite.Rotate(CurrentTime, GamemakerDegreeToRad(aliveObject.Rotation) - DegToRad(ViewAngle));
 
             if (aliveObject.ScaleChanged() || ViewHeight != _previousViewHeight || ViewWidth != _previousViewWidth)
-                aliveObject.UnderlyingSprite.Scale(CurrentTime, aliveObject.Scale * viewHeightMultiplier); // todo vector scale both
+                aliveObject.UnderlyingSprite.ScaleVec(CurrentTime, aliveObject.Scale * viewWidthMultiplier, aliveObject.Scale * viewHeightMultiplier);
             if (aliveObject.AlphaChanged())
                 aliveObject.UnderlyingSprite.Fade(CurrentTime, aliveObject.Alpha);
         }
@@ -123,8 +123,7 @@ public class GameEngine
         Generator.BgSprite?.Move(CurrentTime, CurrentTime + stepMilliseconds,
             (Generator.BgSprite.InitialPosition.X - _previousViewXOffset) * previousViewWidthMultiplier, (Generator.BgSprite.InitialPosition.Y - _previousViewYOffset) * previousViewHeightMultiplier,
             (Generator.BgSprite.InitialPosition.X - ViewXOffset) * viewWidthMultiplier, (Generator.BgSprite.InitialPosition.Y - ViewYOffset) * viewHeightMultiplier);
-        // if (viewHeightMultiplier != 0.8 || viewWidthMultiplier != 0.8)
-            Generator.BgSprite?.Scale(CurrentTime, viewHeightMultiplier); // todo vector scale both
+        Generator.BgSprite?.ScaleVec(CurrentTime, viewWidthMultiplier, viewHeightMultiplier);
 
         PlayerX += PlayerXSpeed;
         PlayerY += PlayerYSpeed;

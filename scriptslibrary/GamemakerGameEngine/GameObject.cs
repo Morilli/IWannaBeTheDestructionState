@@ -64,6 +64,8 @@ public abstract class GameObject
     private double _previousScale = 0; // intentionally 0 instead of 1 to force a one-time ScaleChanged==true
     private double _scale = 1;
 
+    // In the future, this could be split into ScaleX and ScaleY to allow stretching objects
+    // as is that isn't used in IWannaBeTheDestructionState, but could be used in other games
     public virtual double Scale
     {
         get => _scale;

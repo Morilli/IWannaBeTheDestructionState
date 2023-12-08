@@ -164,8 +164,6 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         // technically part of the previous timeline but we need to setup BG before starting this one
         gameEngine.Step(17); // 64
         BgSprite = GetLayer("Room").CreateSprite("room150_emptyT.png", OsbOrigin.TopLeft, new Vector2(1600, 0));
-        // BgSprite.Scale(1488 * stepMilliseconds, 2289 * stepMilliseconds, positionMultiplier, positionMultiplier);
-        // starts at step 64, before that is presumably testing code
         gameEngine.AddObject(new Object748(gameEngine));
         gameEngine.AddObject(new Object750(gameEngine));
         gameEngine.AddObject(new Object752(gameEngine, 1600, 0));
@@ -588,7 +586,6 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         gameEngine.ViewYOffset = 2464;
         BgSprite = GetLayer("Room").CreateSprite("sprite521.png", OsbOrigin.Centre,
             new Vector2((float)(gameEngine.ViewXOffset + playfieldMiddleX), (float)(gameEngine.ViewYOffset + 304)));
-        // BgSprite.Scale(gameEngine.CurrentTime, gameEngine.CurrentTime + 200 * stepMilliseconds, positionMultiplier, positionMultiplier);
         gameEngine.AddObject(new Object752(gameEngine, 1600, 0));
         gameEngine.ForEach<Object748>(gameEngine.DeleteObject);
         gameEngine.ForEach<Object758>(gameEngine.DeleteObject);
@@ -1906,7 +1903,6 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
     public override void Generate()
     {
         BgSprite = GetLayer("Room").CreateSprite("sprite521.png", OsbOrigin.Centre, new Vector2((float)playfieldMiddleX, (float)playfieldMiddleY));
-        // BgSprite.Scale(26 * stepMilliseconds, 1487 * stepMilliseconds, positionMultiplier, positionMultiplier);
 
         GameEngine gameEngine = new GameEngine(this, 26, 26 * stepMilliseconds);
 
