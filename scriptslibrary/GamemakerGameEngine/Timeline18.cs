@@ -265,7 +265,7 @@ public class Object734 : GameObject
         Invisible = true;
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 
     public override void Step()
     {
@@ -295,7 +295,7 @@ public class Object735 : GameObject
         UnderlyingSprite = engine.Generator.CreateSprite("sprite515.png");
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 
     public override void Step()
     {

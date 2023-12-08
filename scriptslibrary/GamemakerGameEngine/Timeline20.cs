@@ -1174,4 +1174,3 @@ public sealed class Object813 : GameObject
         if (IsOutsideOfRoom() || NextX < 1600 - 8 || PointDistance(NextX, NextY, 2000, 2768) >= 1000) engine.DeleteObject(this);
     }
 }
-

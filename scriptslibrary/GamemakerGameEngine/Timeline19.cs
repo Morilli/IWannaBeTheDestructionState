@@ -1,4 +1,5 @@
-﻿using static StorybrewScripts.Utils;
+﻿using System;
+using static StorybrewScripts.Utils;
 
 namespace StorybrewScripts.GamemakerGameEngine;
 
@@ -161,7 +162,7 @@ public class Object751 : GameObject
         UnderlyingSprite = engine.Generator.CreateSprite("sprite515.png");
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 
     public override void Step()
     {
@@ -222,7 +223,6 @@ public sealed class Object754 : GameObject
     {
         public Clock3(Object754 parent) : base(() =>
         {
-            // TODO check if this is necessary; it seems to be a "block killer" sprite
             // parent.engine.AddObject(new Object757(parent.engine, parent.CurrentX, parent.CurrentY));
             parent.Speed = 40;
             parent.Direction = PointDirection(parent.CurrentX, parent.CurrentY, parent.engine.PlayerX, parent.engine.PlayerY) + 180;
@@ -887,7 +887,7 @@ public sealed class Object825 : GameObject
         UnderlyingSprite = engine.Generator.CreateSprite("sprite515.png");
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 
     public override void Step()
     {
@@ -922,4 +922,3 @@ public sealed class Object823 : GameObject
         Scale = 2;
     }
 }
-

@@ -643,6 +643,7 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         }
 
         gameEngine.Step(10); // 847
+        Log($"current time: {gameEngine.CurrentTime}");
         for (int i = 0; i < 20; i++)
         {
             gameEngine.AddObject(new Object772(gameEngine, 2000,2768)
@@ -1687,6 +1688,7 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         gameEngine.ForEach<Object840>(gameEngine.DeleteObject);
 
         gameEngine.Step(14); // 546
+        gameEngine.PlayerXSpeed = 2;
         gameEngine.ForEach<Object846>(o => o.Clocks[0].Timer = 1);
         gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
         gameEngine.AddObject(new Object843(gameEngine, 1600, 2616)
@@ -1696,8 +1698,209 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         gameEngine.AddObject(new Object844(gameEngine));
 
         gameEngine.Step(106); // 652
+        gameEngine.PlayerXSpeed = 0;
+        gameEngine.AddObject(new Object856(gameEngine));
 
+        gameEngine.Step(124); // 776
+        gameEngine.ForEach<Object844>(o =>
+        {
+            o.Clocks[0].Timer = 0;
+            o.Clocks[1].Timer = 0;
+        });
+        gameEngine.ForEach<Object845>(o =>
+        {
+            o.Speed = 0;
+            o.Direction = 90;
+        });
+        gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
+        gameEngine.ForEach<Object857>(o => o.Clocks[0].Timer = 1);
+        gameEngine.ForEach<Object856>(gameEngine.DeleteObject);
 
+        gameEngine.Step(14); // 790
+        gameEngine.ForEach<Object845>(o => o.Speed = 13);
+        gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
+        gameEngine.AddObject(new Object847(gameEngine, 2400, 2616)
+        {
+            Speed = 20,
+            Direction = 180
+        });
+        gameEngine.ForEach<Object857>(o => o.Speed = 25);
+
+        gameEngine.Step(110); // 900
+        gameEngine.ForEach<Object845>(o => o.Clocks[0].Timer = 1);
+
+        gameEngine.Step(77); // 977
+        gameEngine.ForEach<Object849>(o =>
+        {
+            int imageIndex = random.Next(8);
+            o.UnderlyingSprite = CreateSprite($"sprite546_{imageIndex}.png");
+            o.Scale = 0; o.ScaleChanged(); o.Scale = 1; // massive hack because underlying sprite changes aren't fully supported yet
+            o.image_index = imageIndex;
+            o.Friction = 0;
+            o.Clocks[0].Timer = 0;
+            o.Clocks[1].Timer = 1;
+            o.Clocks[2].Timer = 0;
+            o.Clocks[3].Timer = 1;
+            o.Clocks[5].Timer = 1;
+        });
+        gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
+
+        gameEngine.Step(47); // 1024
+        gameEngine.ForEach<Object849>(o => o.Clocks[4].Timer = 1);
+        gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
+
+        gameEngine.Step(15); // 1039
+        gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
+        gameEngine.ForEach<Object850>(gameEngine.DeleteObject);
+        int a = random.Next(19);
+        int imageIndex = random.Next(8);
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(11); // 1050
+        gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
+        gameEngine.ForEach<Object850>(gameEngine.DeleteObject);
+        a = random.Next(19);
+        imageIndex = random.Next(8);
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(10); // 1060
+        gameEngine.ForEach<Object850>(gameEngine.DeleteObject);
+        a = random.Next(19);
+        imageIndex = random.Next(8);
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(10); // 1070
+        double dir = PointDirection(2000, 2616, gameEngine.PlayerX, gameEngine.PlayerY);
+        imageIndex = random.Next(8);
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = dir + 18 * i + 9
+            });
+        }
+
+        gameEngine.Step(12); // 1082
+        gameEngine.ForEach<Object854>(o => o.Speed = 40);
+
+        gameEngine.Step(20); // 1102
+        a = random.Next(19);
+        imageIndex = random.Next(8);
+        // rty = irandom_range(1800,2200)
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(10); // 1112
+        a = random.Next(19);
+        imageIndex = random.Next(8);
+        // rty = irandom_range(1800,2200)
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(10); // 1122
+        dir = PointDirection(2000, 2616, gameEngine.PlayerX, gameEngine.PlayerY);
+        imageIndex = random.Next(8);
+        // rty = irandom_range(1800,2200)
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = dir + 18 * i + 9
+            });
+        }
+
+        gameEngine.Step(12); // 1134
+        gameEngine.AddObject(new Object855(gameEngine));
+
+        gameEngine.Step(11); // 1145
+        gameEngine.ForEach<Object855>(gameEngine.DeleteObject);
+
+        gameEngine.Step(17); // 1162
+        a = random.Next(19);
+        imageIndex = random.Next(8);
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 17,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(10); // 1172
+        a = random.Next(19);
+        imageIndex = random.Next(8);
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 19,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(10); // 1182
+        a = random.Next(19);
+        imageIndex = random.Next(8);
+        for (int i = 0; i < 20; i++)
+        {
+            gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+            {
+                Speed = 21,
+                Direction = a + 18 * i
+            });
+        }
+
+        gameEngine.Step(12); // 1194
+        gameEngine.AddObject(new Object858(gameEngine));
+
+        gameEngine.Step(30); // 1224
+        gameEngine.ForEach<Object854>(o => o.Speed = 1);
+        gameEngine.ForEach<Object858>(gameEngine.DeleteObject);
+
+        gameEngine.Step(30); // 1254
+        gameEngine.ForEach<Object854>(o => o.Clocks[1].Timer = 1);
+
+        gameEngine.Step(15); // 1269
+        gameEngine.ForEach<Object859>(o => o.Clocks[1].Timer = 1);
+
+        gameEngine.Step(131); // 1400
+        // TODO warp
     }
 
     public override void Generate()

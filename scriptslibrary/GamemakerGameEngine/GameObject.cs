@@ -30,7 +30,9 @@ public class Cock
 public abstract class GameObject
 {
     protected readonly GameEngine engine;
-    public OsbSprite? UnderlyingSprite { get; protected set; }
+    // TODO: this underlying sprite *could* change at any point, and is affected by sprite_index, image_index and image_speed variables
+    // currently this is done manually as few sprites use any of those, but this should be supported in GameObject in the future
+    public OsbSprite? UnderlyingSprite { get; protected internal set; }
     public IReadOnlyList<Cock> Clocks { get; protected set; } = Array.Empty<Cock>();
 
     public double CurrentX { get; private set; }
@@ -49,6 +51,7 @@ public abstract class GameObject
     protected internal double GravityStrength { get; set; }
     protected double GravityDirection { get; set; }
 
+    // sprite rotation in gamemaker degree
     public virtual double Rotation { get; protected set; }
     private double _previousRotation;
     public bool RotationChanged()
@@ -195,6 +198,11 @@ public abstract class GameObject
 
         NextX = CurrentX + nextXOffset + diffX;
         NextY = CurrentY + nextYOffset + diffY;
+
+        // because i'm simulating smooth movement and those offsets are used for teleports,
+        // not applying those offsets to the current pos could cause single-frame "bullet" movement across the screen
+        CurrentX += nextXOffset;
+        CurrentY += nextYOffset;
 
         nextXOffset = nextYOffset = 0;
     }

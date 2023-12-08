@@ -83,7 +83,7 @@ public sealed class Object828 : GameObject
         Invisible = true;
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction); // technically only done on initial step, but this is fine
+    public override double Rotation => Direction; // technically only done on initial step, but this is fine
 
     public override void Step()
     {
@@ -123,7 +123,7 @@ public sealed class Object829 : GameObject
         Invisible = true;
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction); // technically only done on initial step, but this is fine
+    public override double Rotation => Direction; // technically only done on initial step, but this is fine
 
     public override void Step()
     {
@@ -383,7 +383,7 @@ public sealed class Object841 : GameObject
         Invisible = true;
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 
     public override void Step()
     {
@@ -462,7 +462,7 @@ public sealed class Object842 : GameObject
         Invisible = true;
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 
     public override void Step()
     {
@@ -664,7 +664,11 @@ public sealed class Object845 : GameObject
     {
         public Clock0(Object845 parent) : base(() =>
         {
-            parent.engine.AddObject(new Object849(parent.engine, parent.CurrentX, parent.CurrentY));
+            parent.engine.AddObject(new Object849(parent.engine, parent.CurrentX, parent.CurrentY)
+            {
+                Speed = parent.Speed,
+                Direction = parent.Direction
+            });
             parent.engine.DeleteObject(parent);
         }) { }
     }
@@ -679,7 +683,7 @@ public sealed class Object845 : GameObject
         UnderlyingSprite = engine.Generator.CreateSprite("sprite515.png");
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 
     public override void Step()
     {
@@ -690,6 +694,8 @@ public sealed class Object845 : GameObject
 
 public sealed class Object849 : GameObject
 {
+    internal int image_index;
+
     private class Clock0 : Cock
     {
         public Clock0(Object849 parent) : base(() =>
@@ -727,8 +733,7 @@ public sealed class Object849 : GameObject
     {
         public Clock4(Object849 parent) : base(() =>
         {
-            parent.engine.AddObject(new Object850(parent.engine, parent.CurrentX, parent.CurrentY));
-            // TODO image_index = image_index
+            parent.engine.AddObject(new Object850(parent.engine, parent.CurrentX, parent.CurrentY, parent.image_index));
             parent.engine.DeleteObject(parent);
         }) { }
     }
@@ -757,7 +762,7 @@ public sealed class Object849 : GameObject
         UnderlyingSprite = engine.Generator.CreateSprite("sprite515.png");
     }
 
-    public override double Rotation => GamemakerDegreeToRad(Direction);
+    public override double Rotation => Direction;
 }
 
 public sealed class Object850 : GameObject
@@ -771,14 +776,14 @@ public sealed class Object850 : GameObject
         }) { }
     }
 
-    public Object850(GameEngine engine, double initialX, double initialY) : base(engine, initialX, initialY)
+    public Object850(GameEngine engine, double initialX, double initialY, int imageIndex) : base(engine, initialX, initialY)
     {
         Clocks = new Cock[]
         {
             new Clock0(this)
         };
 
-        UnderlyingSprite = engine.Generator.CreateSprite("sprite522_0.png"); // TODO check image index correctness
+        UnderlyingSprite = engine.Generator.CreateSprite($"sprite522_{imageIndex}.png");
     }
 
     public override void Step()
@@ -788,3 +793,305 @@ public sealed class Object850 : GameObject
     }
 }
 
+public sealed class Object856 : GameObject
+{
+    private class Clock0 : Cock
+    {
+        public Clock0(Object856 parent) : base(() =>
+        {
+            parent.engine.AddObject(new Object857(parent.engine, 1600, random.Next(2464, 3073))
+            {
+                Speed = 10,
+                Direction = random.Next(-90, 91)
+            });
+            parent.engine.AddObject(new Object857(parent.engine, 2400, random.Next(2464, 3073))
+            {
+                Speed = 10,
+                Direction = random.Next(90, 271)
+            });
+
+            parent.Clocks[0].Timer = 4;
+        }) { }
+    }
+
+    public Object856(GameEngine engine) : base(engine)
+    {
+        Clocks = new Cock[]
+        {
+            new Clock0(this)
+        };
+        Clocks[0].Timer = 1;
+    }
+}
+
+public sealed class Object857 : GameObject
+{
+    private class Clock0 : Cock
+    {
+        public Clock0(Object857 parent) : base(() =>
+        {
+            parent.Speed = 0;
+            parent.Direction = PointDirection(parent.CurrentX, parent.CurrentY, parent.engine.PlayerX, parent.engine.PlayerY) + 180;
+        }) { }
+    }
+
+    public Object857(GameEngine engine, double initialX, double initialY) : base(engine, initialX, initialY)
+    {
+        Clocks = new Cock[]
+        {
+            new Clock0(this)
+        };
+
+        UnderlyingSprite = engine.Generator.CreateSprite("sprite515.png");
+    }
+
+    public override double Rotation => Direction;
+
+    public override void Step()
+    {
+        base.Step();
+        if (IsOffscreen()) engine.DeleteObject(this);
+    }
+}
+
+public sealed class Object847 : GameObject
+{
+    private class Clock0 : Cock
+    {
+        public Clock0(Object847 parent) : base(() =>
+        {
+            double a = PointDirection(parent.CurrentX, parent.CurrentY, parent.engine.PlayerX, parent.engine.PlayerY);
+            for (int i = 0; i < 10; i++)
+            {
+                parent.engine.AddObject(new Object828(parent.engine, parent.CurrentX, parent.CurrentY)
+                {
+                    Speed = 25,
+                    Direction = a + 36 * i
+                });
+            }
+
+            parent.Clocks[0].Timer = 3;
+        }) { }
+    }
+    private class Clock1 : Cock
+    {
+        public Clock1(Object847 parent) : base(() =>
+        {
+            int repeat = random.Next(1, 3);
+            for (int i = 0; i < repeat; i++)
+            {
+                parent.engine.AddObject(new Object829(parent.engine, parent.CurrentX, parent.CurrentY)
+                {
+                    Speed = 12,
+                    Direction = random.Next(361)
+                });
+            }
+
+            parent.engine.AddObject(new Object829(parent.engine, parent.CurrentX, parent.CurrentY)
+            {
+                Speed = 12,
+                Direction = PointDirection(parent.CurrentX, parent.CurrentY, parent.engine.PlayerX, parent.engine.PlayerY) + random.Next(16, 345)
+            });
+
+            parent.Clocks[1].Timer = 1;
+        }) { }
+    }
+
+    public Object847(GameEngine engine, double initialX, double initialY) : base(engine, initialX, initialY)
+    {
+        Clocks = new Cock[]
+        {
+            new Clock0(this),
+            new Clock1(this)
+        };
+        Clocks[0].Timer = 1;
+
+        GravityStrength = 0.38;
+        GravityDirection = 0;
+    }
+
+    public override void Step()
+    {
+        base.Step();
+        if (IsOffscreen()) engine.DeleteObject(this);
+    }
+}
+
+public sealed class Object854 : GameObject
+{
+    private int image_index;
+
+    private class Clock0 : Cock
+    {
+        public Clock0(Object854 parent) : base(() =>
+        {
+            parent.Speed = 3;
+            parent.Direction = PointDirection(parent.CurrentX, parent.CurrentY, parent.engine.PlayerX, parent.engine.PlayerY) + 180;
+        }) { }
+    }
+    private class Clock1 : Cock
+    {
+        public Clock1(Object854 parent) : base(() =>
+        {
+            parent.engine.AddObject(new Object859(parent.engine, parent.CurrentX, parent.CurrentY, parent.image_index)
+            {
+                Speed = parent.Speed,
+                Direction = parent.Direction
+            });
+
+            parent.engine.DeleteObject(parent);
+        }) { }
+    }
+    private class Clock2 : Cock
+    {
+        public Clock2(Object854 parent) : base(() =>
+        {
+            parent.engine.AddObject(new Object859(parent.engine, parent.CurrentX, parent.CurrentY, parent.image_index)
+            {
+                Speed = parent.Speed,
+                Direction = parent.Direction
+            });
+
+            parent.engine.DeleteObject(parent);
+        }) { }
+    }
+
+    public Object854(GameEngine engine, double initialX, double initialY, int imageIndex) : base(engine, initialX, initialY)
+    {
+        Clocks = new Cock[]
+        {
+            new Clock0(this),
+            new Clock1(this),
+            new Clock2(this)
+        };
+
+        image_index = imageIndex;
+        UnderlyingSprite = engine.Generator.CreateSprite($"sprite522_{imageIndex}.png");
+    }
+
+    public override void Step()
+    {
+        base.Step();
+        if (Alpha <= 0 || IsOffscreen()) engine.DeleteObject(this);
+    }
+}
+
+public sealed class Object859 : GameObject
+{
+    private class Clock0 : Cock
+    {
+        public Clock0(Object859 parent) : base(() =>
+        {
+            parent.Alpha -= 0.02;
+
+            parent.Clocks[0].Timer = 1;
+        }) { }
+    }
+    private class Clock1 : Cock
+    {
+        public Clock1(Object859 parent) : base(() =>
+        {
+            parent.Alpha -= 0.02;
+
+            parent.Clocks[0].Timer = 1;
+        }) { }
+    }
+
+    public Object859(GameEngine engine, double initialX, double initialY, int imageIndex) : base(engine, initialX, initialY)
+    {
+        Clocks = new Cock[]
+        {
+            new Clock0(this),
+            new Clock1(this)
+        };
+        Clocks[0].Timer = 1;
+
+        UnderlyingSprite = engine.Generator.CreateSprite($"sprite522_{imageIndex}.png");
+    }
+
+    public override void Step()
+    {
+        base.Step();
+        if (Alpha <= 0 || IsOffscreen()) engine.DeleteObject(this);
+    }
+}
+
+public sealed class Object855 : GameObject
+{
+    private class Clock0 : Cock
+    {
+        public Clock0(Object855 parent) : base(() =>
+        {
+            int a = random.Next(21);
+            int imageIndex = random.Next(8);
+            for (int i = 0; i < 18; i++)
+            {
+                parent.engine.AddObject(new Object854(parent.engine, 2000, 2616, imageIndex)
+                {
+                    Speed = 17,
+                    Direction = a + 20 * i
+
+                });
+            }
+
+            parent.Clocks[0].Timer = 2;
+        }) { }
+    }
+
+    public Object855(GameEngine engine) : base(engine)
+    {
+        Clocks = new Cock[]
+        {
+            new Clock0(this)
+        };
+        Clocks[0].Timer = 1;
+    }
+}
+
+public sealed class Object858 : GameObject
+{
+    private class Clock0 : Cock
+    {
+        public Clock0(Object858 parent) : base(() =>
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                parent.engine.AddObject(new Object854(parent.engine, 2000, 2616, random.Next(8))
+                {
+                    Speed = random.Next(8, 23),
+                    Direction = random.Next(361)
+                });
+            }
+
+            parent.Clocks[0].Timer = 1;
+        }) { }
+    }
+    private class Clock1 : Cock
+    {
+        public Clock1(Object858 parent) : base(() =>
+        {
+            int imageIndex = random.Next(8);
+            int a = random.Next(37);
+            for (int i = 0; i < 10; i++)
+            {
+                parent.engine.AddObject(new Object854(parent.engine, 2000, 2616, imageIndex)
+                {
+                    Speed = 23,
+                    Direction = a + 36 * i
+                });
+            }
+
+            parent.Clocks[1].Timer = 2;
+        }) { }
+    }
+
+    public Object858(GameEngine engine) : base(engine)
+    {
+        Clocks = new Cock[]
+        {
+            new Clock0(this),
+            new Clock1(this)
+        };
+        Clocks[1].Timer = 1;
+    }
+}

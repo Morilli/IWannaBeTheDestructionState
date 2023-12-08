@@ -207,4 +207,3 @@ public sealed class Object821 : GameObject
         if (IsOffscreen() || Scale <= 0) engine.DeleteObject(this);
     }
 }
-

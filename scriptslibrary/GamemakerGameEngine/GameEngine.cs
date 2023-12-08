@@ -110,7 +110,7 @@ public class GameEngine
             // this method will apply the rotation to the entire object's lifetime before CurrentTime as well though
             // we can't just do a currentstep -> nextstep rotation though because then objects may have an incorrect initial rotation
             if (ViewAngle != _previousViewAngle || aliveObject.RotationChanged())
-                aliveObject.UnderlyingSprite.Rotate(CurrentTime, aliveObject.Rotation - DegToRad(ViewAngle));
+                aliveObject.UnderlyingSprite.Rotate(CurrentTime, GamemakerDegreeToRad(aliveObject.Rotation) - DegToRad(ViewAngle));
 
             if (aliveObject.ScaleChanged() || ViewHeight != _previousViewHeight || ViewWidth != _previousViewWidth)
                 aliveObject.UnderlyingSprite.Scale(CurrentTime, aliveObject.Scale * viewHeightMultiplier); // todo vector scale both
