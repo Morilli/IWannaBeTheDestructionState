@@ -643,7 +643,6 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         }
 
         gameEngine.Step(10); // 847
-        Log($"current time: {gameEngine.CurrentTime}");
         for (int i = 0; i < 20; i++)
         {
             gameEngine.AddObject(new Object772(gameEngine, 2000,2768)
@@ -1704,8 +1703,9 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         gameEngine.Step(124); // 776
         gameEngine.ForEach<Object844>(o =>
         {
-            o.Clocks[0].Timer = 0;
-            o.Clocks[1].Timer = 0;
+            // o.Clocks[0].Timer = 0;
+            // o.Clocks[1].Timer = 0;
+            gameEngine.DeleteObject(o); // this isn't actually done in the original game, maybe it was supposed to be reused later
         });
         gameEngine.ForEach<Object845>(o =>
         {
@@ -1926,7 +1926,6 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
 
         Timeline22(gameEngine);
         Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
-
-
+        // foreach (var gameObject in gameEngine.Objects) Log(gameObject.GetType());
     }
 }

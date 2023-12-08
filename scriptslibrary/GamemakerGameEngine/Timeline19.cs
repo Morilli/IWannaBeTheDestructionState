@@ -1,5 +1,4 @@
-﻿using System;
-using static StorybrewScripts.Utils;
+﻿using static StorybrewScripts.Utils;
 
 namespace StorybrewScripts.GamemakerGameEngine;
 
@@ -687,7 +686,7 @@ public sealed class Object777 : GameObject
     public override void Step()
     {
         base.Step();
-        if (Alpha < 0) engine.DeleteObject(this);
+        if (Alpha <= 0) engine.DeleteObject(this);
     }
 }
 
