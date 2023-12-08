@@ -4,7 +4,7 @@ using System.Linq;
 using StorybrewCommon.Storyboarding.CommandValues;
 using static StorybrewScripts.Utils;
 
-namespace StorybrewScripts;
+namespace StorybrewScripts.GamemakerGameEngine;
 
 public class GameEngine
 {
