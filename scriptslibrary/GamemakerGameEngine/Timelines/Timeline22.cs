@@ -1,4 +1,6 @@
-﻿using static StorybrewScripts.Utils;
+﻿#define DO_COMMENTED_CODE
+
+using static StorybrewScripts.Utils;
 using StorybrewScripts.GamemakerGameEngine.GameObjects;
 
 namespace StorybrewScripts.GamemakerGameEngine.Timelines;
@@ -225,6 +227,19 @@ public class Timeline22 : Timeline
 
         actions[1039] = () =>
         {
+#if DO_COMMENTED_CODE
+            gameEngine.AddObject(new Object851(gameEngine, 1600, 2464)
+            {
+                Speed = 20,
+                Direction = 0
+            });
+            gameEngine.AddObject(new Object852(gameEngine, 2400, 2464)
+            {
+                Speed = 20,
+                Direction = 180
+            });
+#endif
+
             gameEngine.AddObject(new Object802(gameEngine, 1200, 2160));
             gameEngine.ForEach<Object850>(gameEngine.DeleteObject);
             int a = random.Next(19);
@@ -331,12 +346,37 @@ public class Timeline22 : Timeline
             }
         };
 
-        actions[1134] = () => { gameEngine.AddObject(new Object855(gameEngine)); };
+        actions[1134] = () =>
+        {
+#if DO_COMMENTED_CODE
+            int a = random.Next(19);
+            int imageIndex = random.Next(8);
+            for (int i = 0; i < 20; i++)
+            {
+                gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, imageIndex)
+                {
+                    Speed = 15,
+                    Direction = a + 18 * i
+                });
+            }
+#endif
+            gameEngine.AddObject(new Object855(gameEngine));
+        };
 
         actions[1145] = () => { gameEngine.ForEach<Object855>(gameEngine.DeleteObject); };
 
         actions[1162] = () =>
         {
+#if DO_COMMENTED_CODE
+            for (int i = 0; i < 20; i++)
+            {
+                gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, random.Next(8))
+                {
+                    Speed = 8 + random.NextDouble() * 11,
+                    Direction = random.Next(361)
+                });
+            }
+#endif
             int a = random.Next(19);
             int imageIndex = random.Next(8);
             for (int i = 0; i < 20; i++)
@@ -351,6 +391,16 @@ public class Timeline22 : Timeline
 
         actions[1172] = () =>
         {
+#if DO_COMMENTED_CODE
+            for (int i = 0; i < 20; i++)
+            {
+                gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, random.Next(8))
+                {
+                    Speed = 8 + random.NextDouble() * 12,
+                    Direction = random.Next(361)
+                });
+            }
+#endif
             int a = random.Next(19);
             int imageIndex = random.Next(8);
             for (int i = 0; i < 20; i++)
@@ -365,6 +415,16 @@ public class Timeline22 : Timeline
 
         actions[1182] = () =>
         {
+#if DO_COMMENTED_CODE
+            for (int i = 0; i < 20; i++)
+            {
+                gameEngine.AddObject(new Object854(gameEngine, 2000, 2616, random.Next(8))
+                {
+                    Speed = 8 + random.NextDouble() * 13,
+                    Direction = random.Next(361)
+                });
+            }
+#endif
             int a = random.Next(19);
             int imageIndex = random.Next(8);
             for (int i = 0; i < 20; i++)
