@@ -5,6 +5,8 @@ using OpenTK;
 using StorybrewCommon.Scripting;
 using StorybrewCommon.Storyboarding;
 using StorybrewScripts.GamemakerGameEngine;
+using StorybrewScripts.GamemakerGameEngine.GameObjects;
+using StorybrewScripts.GamemakerGameEngine.Timelines;
 using static StorybrewScripts.Utils;
 
 namespace StorybrewScripts;
@@ -14,8 +16,12 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
     private StoryboardLayer OverlayLayer => GetLayer("Overlay");
 
     public OsbSprite? BgSprite { get; private set; }
-    public OsbSprite CreateSprite(string path) => OverlayLayer.CreateSprite(path);
+    public void SetBgSprite(string path, OsbOrigin origin, int initialX, int initialY)
+    {
+        BgSprite = GetLayer("Room").CreateSprite(path, origin, new Vector2(initialX, initialY));
+    }
 
+    public OsbSprite CreateSprite(string path) => OverlayLayer.CreateSprite(path);
     public OsbSprite CreateSprite(int depth, string path) => GetLayer(depth.ToString()).CreateSprite(path);
 
     // from Object719, which is spawned in Room150 initially, starts Timeline18 and acts as parent object for the timelines
@@ -38,7 +44,6 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         foreach (Object730 object730 in gameEngine.Objects.OfType<Object730>()) object730.Clocks[1].Timer = 1;
 
         gameEngine.Step(26); // 996
-        gameEngine.PlayerXSpeed = 2;
         foreach (Object730 object730 in gameEngine.Objects.OfType<Object730>())
         {
             object730.Friction = 0;
@@ -48,6 +53,7 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         }
 
         gameEngine.Step(18); // 1014
+        gameEngine.PlayerXSpeed = 2.5;
         gameEngine.AddObject(new Object731(gameEngine));
         gameEngine.AddObject(new Object733(gameEngine));
 
@@ -585,7 +591,7 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         gameEngine.DeleteObject(halfBgObject);
         gameEngine.ViewYOffset = 2464;
         BgSprite = GetLayer("Room").CreateSprite("sprite521.png", OsbOrigin.Centre,
-            new Vector2((float)(gameEngine.ViewXOffset + playfieldMiddleX), (float)(gameEngine.ViewYOffset + 304)));
+            new Vector2((float)(gameEngine.ViewXOffset + 400), (float)(gameEngine.ViewYOffset + 304)));
         gameEngine.AddObject(new Object752(gameEngine, 1600, 0));
         gameEngine.ForEach<Object748>(gameEngine.DeleteObject);
         gameEngine.ForEach<Object758>(gameEngine.DeleteObject);
@@ -659,7 +665,7 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
                 Direction = direction + 18 * i
             });
         }
-        gameEngine.AddObject(new Object773(gameEngine, 2400, 2464));
+        gameEngine.AddObject(new Object773(gameEngine, 2400, 2464)); // not actually visible cause offscreen lul
 
         gameEngine.Step(12); // 874
         direction = PointDirection(2400, 3072, gameEngine.PlayerX, gameEngine.PlayerY);
@@ -890,14 +896,14 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         gameEngine.ForEach<Object795>(o =>
         {
             o.Speed = 1;
-            o.Direction = PointDirection(o.NextX, o.NextY, 2000, 2768) + 30;
+            o.Direction = PointDirection(o.CurrentX, o.CurrentY, 2000, 2768) + 30;
             o.Clocks[0].Timer = 1;
             o.Clocks[1].Timer = 1;
         });
         gameEngine.ForEach<Object797>(o =>
         {
             o.Speed = 1;
-            o.Direction = PointDirection(o.NextX, o.NextY, 2000, 2768) + 30;
+            o.Direction = PointDirection(o.CurrentX, o.CurrentY, 2000, 2768) + 30;
             o.Clocks[0].Timer = 0;
             o.Clocks[1].Timer = 1;
         });
@@ -1731,7 +1737,7 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
         {
             int imageIndex = random.Next(8);
             o.UnderlyingSprite = CreateSprite($"sprite546_{imageIndex}.png");
-            o.Scale = 0; o.ScaleChanged(); o.Scale = 1; // massive hack because underlying sprite changes aren't fully supported yet
+            o.Scale = 0.999999999999; // massive hack because underlying sprite changes aren't fully supported yet
             o.image_index = imageIndex;
             o.Friction = 0;
             o.Clocks[0].Timer = 0;
@@ -1902,26 +1908,34 @@ public class AvoidanceGenerator : StoryboardObjectGenerator, ISpriteGenerator
 
     public override void Generate()
     {
-        BgSprite = GetLayer("Room").CreateSprite("sprite521.png", OsbOrigin.Centre, new Vector2((float)playfieldMiddleX, (float)playfieldMiddleY));
+        BgSprite = GetLayer("Room").CreateSprite("sprite521.png", OsbOrigin.Centre, new Vector2(400, 304));
 
-        GameEngine gameEngine = new GameEngine(this, 26, 26 * stepMilliseconds);
+        const int initialStep = 26; // skip the first 26 black steps and use a custom fade instead
+        var sprite = OverlayLayer.CreateSprite("sprite513.png", 400, 304);
+        sprite.Fade(0, initialStep * stepMilliseconds, 0, 1);
+        sprite.Scale(0, 2 * positionMultiplier);
+        GameEngine gameEngine = new GameEngine(this, initialStep, initialStep * stepMilliseconds);
+        gameEngine.CurrentTimeline = new Timeline18(gameEngine, initialStep);
 
-        gameEngine.Step(928); // 954
+        gameEngine.Step(6000);
 
-        Timeline18(gameEngine);
+        // Timeline18(gameEngine);
+        // Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
+        //
+        // Timeline19(gameEngine);
+        // Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
+        //
+        // Timeline20(gameEngine);
+        // Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
+        //
+        // Timeline21(gameEngine);
+        // Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
+        //
+        // Timeline22(gameEngine);
         Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
 
-        Timeline19(gameEngine);
-        Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
-
-        Timeline20(gameEngine);
-        Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
-
-        Timeline21(gameEngine);
-        Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
-
-        Timeline22(gameEngine);
-        Log($"current step: {gameEngine.CurrentStep}, alive objects: {gameEngine.Objects.Count}");
+        // OsbSprite x = new OsbSprite();
+        // x.CommandCost
         // foreach (var gameObject in gameEngine.Objects) Log(gameObject.GetType());
     }
 }

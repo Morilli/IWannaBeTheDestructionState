@@ -35,10 +35,10 @@ public abstract class GameObject
     public OsbSprite? UnderlyingSprite { get; protected internal set; }
     public IReadOnlyList<Cock> Clocks { get; protected set; } = Array.Empty<Cock>();
 
+    public double PreviousX { get; private set; }
+    public double PreviousY { get; private set; }
     public double CurrentX { get; private set; }
     public double CurrentY { get; private set; }
-    public double NextX { get; private set; }
-    public double NextY { get; private set; }
     protected double nextXOffset;
     protected double nextYOffset;
 
@@ -52,56 +52,34 @@ public abstract class GameObject
     protected double GravityDirection { get; set; }
 
     // sprite rotation in gamemaker degree
-    public virtual double Rotation { get; protected set; }
-    private double _previousRotation;
-    public bool RotationChanged()
-    {
-        bool ret = Rotation != _previousRotation;
-        _previousRotation = Rotation;
-        return ret;
-    }
-
-    private double _previousScale = 0; // intentionally 0 instead of 1 to force a one-time ScaleChanged==true
-    private double _scale = 1;
+    public double PreviousRotation { get; private set; }
+    public double Rotation { get; protected set; }
 
     // In the future, this could be split into ScaleX and ScaleY to allow stretching objects
     // as is that isn't used in IWannaBeTheDestructionState, but could be used in other games
-    public virtual double Scale
+    public double PreviousScale { get; private set; }
+    private double _scale = 1;
+    public double Scale
     {
         get => _scale;
         protected internal set => _scale = Math.Max(value, 0);
     }
 
-    public bool ScaleChanged()
-    {
-        bool ret = Scale != _previousScale;
-        _previousScale = Scale;
-        return ret;
-    }
-
-    public virtual double Alpha
+    public double PreviousAlpha { get; private set; }
+    private double _alpha = 1;
+    public double Alpha
     {
         get => _alpha;
         protected set => _alpha = Math.Min(Math.Max(value, 0), 1);
     }
 
-    private double _previousAlpha = 1;
-    private double _alpha = 1;
-
-    public bool AlphaChanged()
-    {
-        bool ret = Alpha != _previousAlpha;
-        _previousAlpha = Alpha;
-        return ret;
-    }
-
-    private bool wasInvisible = true; // set to true so there is one initial InvisibleChanged==true; a later invisibility change could break otherwise
+    private bool _wasInvisible = true; // set to true so there is one initial InvisibleChanged==true; a later invisibility change could break otherwise
     public bool Invisible { get; internal set; }
 
     public bool InvisibleChanged()
     {
-        bool ret = Invisible != wasInvisible;
-        wasInvisible = Invisible;
+        bool ret = Invisible != _wasInvisible;
+        _wasInvisible = Invisible;
         return ret;
     }
 
@@ -113,7 +91,7 @@ public abstract class GameObject
         const double minY = 0 - 8;
         const double maxY = 600 + 8;
 
-        return NextX - engine.ViewXOffset is < minX or > maxX || NextY - engine.ViewYOffset is < minY or > maxY;
+        return CurrentX - engine.ViewXOffset is < minX or > maxX || CurrentY - engine.ViewYOffset is < minY or > maxY;
     }
 
     protected bool IsOutsideOfRoom()
@@ -123,7 +101,7 @@ public abstract class GameObject
         const double minY = 0 - 8;
         const double maxY = 3072 + 8;
 
-        return NextX is < minX or > maxX || NextY is < minY or > maxY;
+        return CurrentX is < minX or > maxX || CurrentY is < minY or > maxY;
     }
 
     protected void CollideWithBorders()
@@ -162,16 +140,31 @@ public abstract class GameObject
             Direction = -Direction;
     }
 
-    public virtual void Step()
-    {
-        CurrentX = NextX;
-        CurrentY = NextY;
+    public virtual void Step() { }
 
+    public virtual void BeginStep()
+    {
+        // doing this here is a bit hacky perhaps, but should be fine
+        // these variables specifically need to be updated before any object or timeline code modifies them
+        PreviousX = CurrentX;
+        PreviousY = CurrentY;
+        PreviousRotation = Rotation;
+        PreviousScale = Scale;
+        PreviousAlpha = Alpha;
+    }
+
+    public virtual void EndStep() { }
+
+    public void TickClocks()
+    {
         foreach (Cock clock in Clocks)
         {
             clock.Tick();
         }
+    }
 
+    public void UpdatePosition()
+    {
         // apply friction. looks correct to do this before calculating next position
         // for future reference check 0:19.900, objects in the middle need to be exactly stacked
         if (Speed != 0)
@@ -183,10 +176,12 @@ public abstract class GameObject
             Speed = newSpeed;
         }
 
+        // calculate offsets for next position based on speed and direction
         double directionRad = GamemakerDegreeToRad(Direction);
         double diffX = Math.Cos(directionRad) * Speed;
         double diffY = Math.Sin(directionRad) * Speed;
 
+        // apply gravity
         if (GravityStrength > 0)
         {
             double gravityDirectionRad = GamemakerDegreeToRad(GravityDirection);
@@ -198,13 +193,13 @@ public abstract class GameObject
             Speed = PointDistance(0, 0, diffX, diffY);
         }
 
-        NextX = CurrentX + nextXOffset + diffX;
-        NextY = CurrentY + nextYOffset + diffY;
+        CurrentX = PreviousX + nextXOffset + diffX;
+        CurrentY = PreviousY + nextYOffset + diffY;
 
         // because i'm simulating smooth movement and those offsets are used for teleports,
         // not applying those offsets to the current pos could cause single-frame "bullet" movement across the screen
-        CurrentX += nextXOffset;
-        CurrentY += nextYOffset;
+        PreviousX += nextXOffset;
+        PreviousY += nextYOffset;
 
         nextXOffset = nextYOffset = 0;
     }
@@ -212,8 +207,8 @@ public abstract class GameObject
     protected GameObject(GameEngine engine, double initialX = 400, double initialY = 300)
     {
         this.engine = engine;
-        CurrentX = NextX = initialX;
-        CurrentY = NextY = initialY;
+        PreviousX = CurrentX = initialX;
+        PreviousY = CurrentY = initialY;
     }
 }
 

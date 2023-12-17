@@ -18,4 +18,4 @@ Layers:
     Name: "Overlay"
     OsbLayer: Overlay
     DiffSpecific: No
-    Visible: Yes
+    Visible: No
