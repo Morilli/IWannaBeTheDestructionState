@@ -15,8 +15,8 @@ public class GameEngine
 
     public int CurrentStep { get; private set; }
     public int CurrentTime { get; private set; }
-    public double PlayerX { get; set; } = 40;
-    public double PlayerY { get; set; } = 600 - 40;
+    public double PlayerX { get; set; } = 400;
+    public double PlayerY { get; set; } = 560;
     public double PlayerXSpeed { get; set; }
     public double PlayerYSpeed { get; set; }
     private double _previousViewAngle;

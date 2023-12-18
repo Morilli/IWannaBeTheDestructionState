@@ -14,6 +14,8 @@ public class Timeline18 : Timeline
 
         actions[26] = () =>
         {
+            gameEngine.PlayerXSpeed = -1;
+
             gameEngine.ForEach<Object719>(o =>
             {
                 o.Clocks[0].Timer = 1;
@@ -36,6 +38,9 @@ public class Timeline18 : Timeline
 
         actions[520] = () =>
         {
+            gameEngine.PlayerX = 48;
+            gameEngine.PlayerXSpeed = 0;
+
             gameEngine.ForEach<Object723>(o =>
             {
                 o.Clocks[0].Timer = 0;
